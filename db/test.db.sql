@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS `subcategories` (
 );
 CREATE TABLE IF NOT EXISTS `expenses` (
 	`id`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`purchaseDate`	TEXT NOT NULL,
-	`updatedDate`	TEXT NOT NULL,
+	`purchaseDate`	INTEGER NOT NULL,
+	`updatedDate`	INTEGER NOT NULL,
 	`categoryId`	INTEGER,
 	`subcategoryId`	INTEGER,
 	`price`	NUMERIC NOT NULL,
