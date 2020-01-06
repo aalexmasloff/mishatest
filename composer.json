@@ -1,0 +1,7 @@
+{
+    "require": {
+        "nesbot/carbon": "^2.28",
+        "ralouphie/getallheaders": "^3.0",
+        "envms/fluentpdo": "^2.1.0"
+    }
+}
