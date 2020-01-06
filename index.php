@@ -11,6 +11,8 @@ require_once 'models/expense.php';
 require_once 'models/queryParams.php';
 require_once 'stores/storeBase.php';
 require_once 'stores/categoryStore.php';
+require_once 'stores/subcategoryStore.php';
+require_once 'stores/expensesStore.php';
 
 $store = new CategoryStore('db/test.db');
 
