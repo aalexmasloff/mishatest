@@ -39,7 +39,7 @@ class StoreBase
         $query->setFetchMode(PDO::FETCH_ASSOC);
 
         $result = $query->fetch();
-        return (int)$result["count"];
+        return (int) $result["count"];
     }
 
     public function getPaged(QueryParams $queryParams)
@@ -47,7 +47,7 @@ class StoreBase
         $skip = $queryParams->pageNumber * $queryParams->pageSize;
         $sql = "SELECT * FROM $this->table ORDER BY 
         $queryParams->orderField $queryParams->order LIMIT $skip, $queryParams->pageSize";
-        
+
         $query = $this->pdo->query($sql);
         $query->setFetchMode(PDO::FETCH_CLASS, $this->dtoName);
 
@@ -60,13 +60,79 @@ class StoreBase
         $this->pdo->exec($sql);
     }
 
-    public function objectKeysToString($obj, string $glue = ",")
+    protected function getKeys($obj, $excludes = null)
     {
-      if(!$obj){
-         return '';
-      }
-         
-      $keys = array_keys((array)$obj);   
-      return implode($glue, $keys);
+        if (!$obj) {
+            return null;
+        }
+
+        $keys = array_keys((array) $obj);
+
+        if ($excludes) {
+            foreach ($excludes as $value) {
+                if (($key = array_search($value, $keys)) !== false) {
+                    unset($keys[$key]);
+                }
+            }
+        }
+
+        return $keys;
+    }
+
+    public function objectKeysToString($obj, $excludes = null, string $glue = ",")
+    {
+        $keys = $this->getKeys($obj, $excludes);
+        if (!$keys) {
+            return '';
+        }
+
+        return implode($glue, $keys);
+    }
+
+    public function objectKeysToPlaceholdersString($obj, $excludes = null, string $glue = ",")
+    {
+        $keys = $this->getKeys($obj, $excludes);
+        if (!$keys) {
+            return '';
+        }
+
+        $arr = array_map(function ($item) {
+            return ':' . $item;
+        }, $keys);
+
+        return implode($glue, $arr);
+    }
+
+    public function objectKeysToSetPairsString($obj, $excludes = null, string $glue = ",")
+    {
+        $keys = $this->getKeys($obj, $excludes);
+        if (!$keys) {
+            return '';
+        }
+
+        $arr = array_map(function ($item) {
+            return "$item = :$item";
+        }, $keys);
+
+        return implode($glue, $arr);
+    }
+
+    public function objectToValues($obj, $excludes = null)
+    {
+        if (!$obj) {
+            return '';
+        }
+
+        $arr = (array) $obj;
+
+        if ($excludes) {
+            foreach ($excludes as $value) {
+                if (array_key_exists($value, $arr)) {
+                    unset($arr[$value]);
+                }
+            }
+        }
+
+        return $arr;
     }
 }

@@ -5,7 +5,7 @@ class Expense
     {
         $this->updatedDate = time();
     }
-    
+
     public $id;
     public $purchaseDate;
     public $updatedDate;

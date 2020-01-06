@@ -14,21 +14,31 @@ require_once 'stores/categoryStore.php';
 require_once 'stores/subcategoryStore.php';
 require_once 'stores/expensesStore.php';
 
-$store = new CategoryStore('db/test.db');
+$store = new ExpensesStore('db/test.db');
+$expense = new Expense();
+$expense->categoryId = 1;
+$expense->subcategoryId = 1;
+$expense->price = 15.35;
+$expense->quantity = 1;
+$expense->sum = 15.35;
+$expense->description = 'My second purchase';
+$expense->notes = 'My second notes';
+$expense->purchaseDate = time();
+$expense->id = 1;
 
-//$store->add('NEW');
+$store->update($expense);
 
-$category = $store->getById(1);
-var_dump($category);
+//$category = $store->getById(1);
+var_dump($store->getAll());
 
-//var_dump($store->objectKeysToString($category));
-$cat = new Category();
-$cat->id = 11;
-$cat->name = 'Updated';
-$store->update($cat);
+//var_dump($store->objectKeysToPlaceholdersString($category));
+// $cat = new Category();
+// $cat->id = 11;
+// $cat->name = 'Updated';
+// $store->update($cat);
 
-$total = $store->getTotal();
-var_dump($total);
+// $total = $store->getTotal();
+// var_dump($total);
 
 
 

@@ -6,20 +6,31 @@ class ExpensesStore extends StoreBase
 
     public function __construct($db)
     {
-        parent::__construct($db, 'subcategories');
+        parent::__construct($db, 'expenses');
     }
 
-    public function add($categoryId, $name)
-    {   
-        $sql = "INSERT INTO $this->table(categoryId, name) VALUES(:name, :categoryId)";
+    public function add(Expense $expense)
+    {
+        $columns = $this->objectKeysToString($expense, ['id']);
+        $placeholders = $this->objectKeysToPlaceholdersString($expense, ['id']);
+
+        $expense->updatedDate = time();
+        $values = $this->objectToValues($expense, ['id']);
+
+        $sql = "INSERT INTO $this->table($columns) VALUES($placeholders)";
         $query = $this->pdo->prepare($sql);
-        $query->execute(['categoryId' => $categoryId, 'name' => $name]);
+        $query->execute($values);
     }
 
-    public function update(Subcategory $category)
-    {   
-        $sql = "UPDATE $this->table SET name = :name, categoryId = :categoryId WHERE id = :id";
+    public function update(Expense $expense)
+    {
+        $setPairs = $this->objectKeysToSetPairsString($expense, ['id']);
+
+        $expense->updatedDate = time();
+        $values = $this->objectToValues($expense);
+
+        $sql = "UPDATE $this->table SET $setPairs WHERE id = :id";
         $query = $this->pdo->prepare($sql);
-        $query->execute(['categoryId' => $category->categoryId, 'name' => $category->name, 'id' => $category->id]);
+        $query->execute($values);
     }
 }
