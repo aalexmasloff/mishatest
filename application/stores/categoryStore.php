@@ -1,5 +1,7 @@
 <?php
 
+require_once 'application/entities/categoryEntity.php';
+
 class CategoryStore extends StoreBase
 {
     protected $entity = CategoryEntity::class;
