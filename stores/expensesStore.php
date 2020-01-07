@@ -2,14 +2,14 @@
 
 class ExpensesStore extends StoreBase
 {
-    protected $dtoName = 'Expense';
+    protected $entity = ExpenseEntity::class;
 
     public function __construct($db)
     {
         parent::__construct($db, 'expenses');
     }
 
-    public function add(Expense $expense)
+    public function add(ExpenseEntity $expense)
     {
         $columns = $this->objectKeysToString($expense, ['id']);
         $placeholders = $this->objectKeysToPlaceholdersString($expense, ['id']);
@@ -22,7 +22,7 @@ class ExpensesStore extends StoreBase
         $query->execute($values);
     }
 
-    public function update(Expense $expense)
+    public function update(ExpenseEntity $expense)
     {
         $setPairs = $this->objectKeysToSetPairsString($expense, ['id']);
 
@@ -32,5 +32,17 @@ class ExpensesStore extends StoreBase
         $sql = "UPDATE $this->table SET $setPairs WHERE id = :id";
         $query = $this->pdo->prepare($sql);
         $query->execute($values);
+    }
+
+    public function getAll()
+    {
+        $sql = "SELECT expenses.*, categories.name AS categoryName, subcategories.name AS subcategoryName FROM expenses
+                LEFT JOIN categories ON categories.id = expenses.categoryId
+                LEFT JOIN subcategories ON subcategories.id = expenses.subcategoryId";
+
+        $query = $this->pdo->query($sql);
+        $query->setFetchMode(PDO::FETCH_CLASS, Expense::class);
+
+        return $query->fetchAll();
     }
 }

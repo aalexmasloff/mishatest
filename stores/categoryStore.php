@@ -2,7 +2,7 @@
 
 class CategoryStore extends StoreBase
 {
-    protected $dtoName = 'Category';
+    protected $entity = CategoryEntity::class;
 
     public function __construct($db)
     {
@@ -16,7 +16,7 @@ class CategoryStore extends StoreBase
         $query->execute(['name' => $name]);
     }
 
-    public function update(Category $category)
+    public function update(CategoryEntity $category)
     {   
         $sql = "UPDATE $this->table SET name = :name WHERE id = :id";
         $query = $this->pdo->prepare($sql);

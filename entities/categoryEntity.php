@@ -1,6 +1,6 @@
 <?php
 
-class Category
+class CategoryEntity
 {
     public $id;
     public $name;

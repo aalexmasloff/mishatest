@@ -4,7 +4,7 @@ class StoreBase
 {
     protected $pdo;
     protected $table;
-    protected $dtoName;
+    protected $entity;
 
     public function __construct($db, $table)
     {
@@ -18,7 +18,7 @@ class StoreBase
     {
         $sql = "SELECT * FROM $this->table WHERE id = $id";
         $query = $this->pdo->query($sql);
-        $query->setFetchMode(PDO::FETCH_CLASS, $this->dtoName);
+        $query->setFetchMode(PDO::FETCH_CLASS, $this->entity);
 
         return $query->fetch();
     }
@@ -27,7 +27,7 @@ class StoreBase
     {
         $sql = "SELECT * FROM $this->table";
         $query = $this->pdo->query($sql);
-        $query->setFetchMode(PDO::FETCH_CLASS, $this->dtoName);
+        $query->setFetchMode(PDO::FETCH_CLASS, $this->entity);
 
         return $query->fetchAll();
     }
@@ -49,7 +49,7 @@ class StoreBase
         $queryParams->orderField $queryParams->order LIMIT $skip, $queryParams->pageSize";
 
         $query = $this->pdo->query($sql);
-        $query->setFetchMode(PDO::FETCH_CLASS, $this->dtoName);
+        $query->setFetchMode(PDO::FETCH_CLASS, $this->entity);
 
         return $query->fetchAll();
     }

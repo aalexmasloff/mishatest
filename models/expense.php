@@ -1,19 +1,6 @@
 <?php
-class Expense
+class Expense extends ExpenseEntity
 {
-    public function __construct()
-    {
-        $this->updatedDate = time();
-    }
-
-    public $id;
-    public $purchaseDate;
-    public $updatedDate;
-    public $categoryId;
-    public $subcategoryId;
-    public $price;
-    public $quantity;
-    public $sum;
-    public $description;
-    public $notes;
+    public $categoryName;
+    public $subcategoryName;
 }
